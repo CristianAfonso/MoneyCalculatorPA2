@@ -8,6 +8,7 @@ import java.net.URLConnection;
 import java.util.Scanner;
 import moneycalculator.modelo.Currency;
 import moneycalculator.modelo.CurrencyList;
+import moneycalculator.modelo.Money;
 
 public class MoneyCalculator {
     
@@ -23,18 +24,19 @@ public class MoneyCalculator {
     private Currency currencyFrom;
     private Currency currencyTo;
     private CurrencyList currencies = new CurrencyList();
-    
+    private Money money;
     
     public MoneyCalculator(){}
     
     private void control() throws Exception{
-        put(currencies);
         input();
         process();
         output();
     }
     
     private void input() throws IOException{
+        put(currencies);
+        
         System.out.println("Introduzca cantidad: ");
         Scanner scanner = new Scanner(System.in);
         amount       = Double.parseDouble(scanner.next());
@@ -42,12 +44,14 @@ public class MoneyCalculator {
         from    = scanner.next();
         System.out.println("Introduzca divisa destino: ");
         to      = scanner.next();
+        
         currencyFrom = currencies.getCurrency(from);
+        money = new Money(currencyFrom, amount);
         currencyTo = currencies.getCurrency(to);
     }
     
     private void process() throws IOException{
-        exchangeRate = getExchangeRate(currencyFrom.getISO(),currencyTo.getISO());
+        exchangeRate = getExchangeRate(money.getCurrency().getISO(),currencyTo.getISO());
     }
     
     private void output(){
