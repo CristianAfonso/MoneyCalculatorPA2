@@ -8,6 +8,7 @@ import java.net.URLConnection;
 import java.util.Scanner;
 import moneycalculator.modelo.Currency;
 import moneycalculator.modelo.CurrencyList;
+import moneycalculator.modelo.ExchangeRate;
 import moneycalculator.modelo.Money;
 
 public class MoneyCalculator {
@@ -24,6 +25,7 @@ public class MoneyCalculator {
     private Currency currencyFrom;
     private Currency currencyTo;
     private CurrencyList currencies = new CurrencyList();
+    private ExchangeRate exchangerate;
     private Money money;
     
     public MoneyCalculator(){}
@@ -51,20 +53,21 @@ public class MoneyCalculator {
     }
     
     private void process() throws IOException{
-        exchangeRate = getExchangeRate(money.getCurrency().getISO(),currencyTo.getISO());
+        exchangerate = getExchangeRate(money.getCurrency(),currencyTo);
     }
     
     private void output(){
-        System.out.println(amount + " " + currencyFrom.getSymbol()  + " equivalen a " + amount*exchangeRate + " " + currencyTo.getSymbol() );
+        System.out.println(money.getAmount() + " " + currencyFrom.getSymbol()  + " equivalen a " + money.getAmount()*exchangerate.getRate() + " " + currencyTo.getSymbol() );
     }
-    private static double getExchangeRate(String from, String to) throws IOException{
-        URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from + "_" + to + "&compact=ultra&apiKey=54e783e7998e50874768"); 
+    private static ExchangeRate getExchangeRate(Currency from, Currency to) throws IOException{
+        URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from.getISO() + "_" + to.getISO() + "&compact=ultra&apiKey=54e783e7998e50874768"); 
+        
         URLConnection connection = url.openConnection();
         try (BufferedReader reader =
                     new BufferedReader(new InputStreamReader(connection.getInputStream()))){
             String line     = reader.readLine();
-            String line1    = line.substring(line.indexOf(to)+5, line.indexOf("}"));
-            return Double.parseDouble(line1);
+            String line1    = line.substring(line.indexOf(to.getISO())+5, line.indexOf("}"));
+            return new ExchangeRate(from, to, Double.parseDouble(line1));
         }
     }
     

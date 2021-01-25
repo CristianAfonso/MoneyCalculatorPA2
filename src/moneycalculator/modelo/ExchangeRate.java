@@ -15,16 +15,16 @@ public class ExchangeRate {
         this.rate=rate;
     }
     
-    private Currency getFrom(){
+    public Currency getFrom(){
         return this.currencyFrom;
     }
-    private Currency getTo(){
+    public Currency getTo(){
         return this.currencyTo;
     }
-    private LocalDate getDate(){
+    public LocalDate getDate(){
         return this.date;
     }
-    private Double getRate(){
+    public Double getRate(){
         return this.rate;
     }
     
