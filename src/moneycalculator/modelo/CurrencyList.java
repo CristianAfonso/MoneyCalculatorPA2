@@ -15,6 +15,6 @@ public class CurrencyList {
     }
     
     public Currency getCurrency(String key){
-        return currencies.get(key);
+        return currencies.get(key.toUpperCase());
     }
 }

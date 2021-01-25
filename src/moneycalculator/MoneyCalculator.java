@@ -57,7 +57,7 @@ public class MoneyCalculator {
     }
     
     private void output(){
-        System.out.println(money.getAmount() + " " + currencyFrom.getSymbol()  + " equivalen a " + money.getAmount()*exchangerate.getRate() + " " + currencyTo.getSymbol() );
+        System.out.println(money.getAmount() + currencyFrom.getSymbol()  + " equivalen a " + money.getAmount()*exchangerate.getRate() + currencyTo.getSymbol() );
     }
     private static ExchangeRate getExchangeRate(Currency from, Currency to) throws IOException{
         URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from.getISO() + "_" + to.getISO() + "&compact=ultra&apiKey=54e783e7998e50874768"); 
